@@ -31,4 +31,16 @@ const createUser = async () => {
   console.log(result);
 };
 
-createUser();
+// createUser();
+
+//* Query
+async function getUser() {
+  const users = await User.find({ last_name: "test123" })
+    .limit(2)
+    .sort({ first_name: -1 })
+    .select({ first_name: 1, last_name: 1 })
+    .count();
+  console.log(users);
+}
+
+getUser();
