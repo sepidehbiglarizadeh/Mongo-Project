@@ -33,13 +33,12 @@ const createUser = async () => {
 
 // createUser();
 
-//* Query
 async function getUser() {
-  const users = await User.find({ last_name: "test123" })
-    .limit(2)
-    .sort({ first_name: -1 })
-    .select({ first_name: 1, last_name: 1 })
-    .count();
+  const pageNumber = 1;
+  const pageSize = 8;
+  const users = await User.find()
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize);
   console.log(users);
 }
 
