@@ -42,4 +42,13 @@ async function getUser() {
   console.log(users);
 }
 
-getUser();
+async function updateUser(id) {
+  const user = await User.findById(id);
+  if (!user) return;
+  user.set({ first_name: "updated name", admin: true });
+  await user.save();
+  console.log(user);
+}
+
+// getUser();
+updateUser("63bfff8e3120272aba9f74dc");
