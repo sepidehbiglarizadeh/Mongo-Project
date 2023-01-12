@@ -43,10 +43,11 @@ async function getUser() {
 }
 
 async function updateUser(id) {
-  const user = await User.findById(id);
-  if (!user) return;
-  user.set({ first_name: "updated name", admin: true });
-  await user.save();
+  const user = await User.update({_id:id},{
+    $set:{
+      first_name:"updated name 2"
+    }
+  })
   console.log(user);
 }
 
