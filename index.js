@@ -5,6 +5,7 @@ mongoose
   .then(() => console.log("connected to mongodb"))
   .catch(() => console.log("could not connect to mongodb"));
 
+//* create a schema
 const userSchema = new mongoose.Schema({
   first_name: String,
   last_name: { type: String, required: true },
@@ -12,3 +13,22 @@ const userSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   admin: Boolean,
 });
+
+//* create a model
+const User = mongoose.model("User", userSchema);
+
+const createUser = async () => {
+  //? create a user
+  const user = new User({
+    first_name: "test",
+    last_name: "test123",
+    favourites: ["sport", "data science", "music"],
+    admin: true,
+  });
+
+  //? save user in database
+  const result = await user.save();
+  console.log(result);
+};
+
+createUser();
