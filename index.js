@@ -11,10 +11,20 @@ const userSchema = new mongoose.Schema({
   last_name: {
     type: String,
     required: function () {
-      return this.admin;
+      this.admin;
     },
   },
-  favourites: { type: [String], enum: ["sport", "politic", "music"] },
+  favourites: {
+    type: [String],
+    enum: ["sport", "politic", "music"],
+    required:true,
+    validate: {
+      validator: function (v) {
+        return v && v.length >= 1;
+      },
+      message: "favourites field should have at least one item",
+    },
+  },
   date: { type: Date, default: Date.now },
   admin: Boolean,
   age: { type: Number, min: 8, max: 120 },
@@ -26,22 +36,22 @@ const User = mongoose.model("User", userSchema);
 const createUser = async () => {
   //? create a user
   const user = new User({
-    first_name: "test",
-    last_name: "test123",
-    favourites: ["sport", "data science", "music"],
+    first_name: "test2",
+    last_name:"test123",
+    favourites: ["sport", "politic", "music"],
     admin: true,
+    age: 31,
   });
 
   try {
-    //? save user in database
     const result = await user.save();
     console.log(result);
   } catch (ex) {
-    console.log(ex.message);
+    console.log("error :", ex.message);
   }
 };
 
-// createUser();
+createUser();
 
 async function getUser() {
   const pageNumber = 1;
