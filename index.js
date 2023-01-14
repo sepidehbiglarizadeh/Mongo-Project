@@ -7,7 +7,13 @@ mongoose
 
 //* create a schema
 const userSchema = new mongoose.Schema({
-  first_name: { type: String, minlength: 3, maxlength: 20 },
+  first_name: {
+    type: String,
+    minlength: 3,
+    maxlength: 20,
+    lowercase: true,
+    trim: true,
+  },
   last_name: {
     type: String,
     required: function () {
@@ -17,7 +23,7 @@ const userSchema = new mongoose.Schema({
   favourites: {
     type: [String],
     enum: ["sport", "politic", "music"],
-    required:true,
+    required: true,
     validate: {
       validator: function (v) {
         return v && v.length >= 1;
@@ -28,6 +34,12 @@ const userSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   admin: Boolean,
   age: { type: Number, min: 8, max: 120 },
+  salary: {
+    type: Number,
+    required: true,
+    set: (v) => Math.round(v),
+    get: (v) => Math.round(v),
+  },
 });
 
 //* create a model
@@ -36,11 +48,12 @@ const User = mongoose.model("User", userSchema);
 const createUser = async () => {
   //? create a user
   const user = new User({
-    first_name: "test2",
-    last_name:"test123",
+    first_name: " TEST ",
+    last_name: "test123",
     favourites: ["sport", "politic", "music"],
     admin: true,
     age: 31,
+    salary: 16.9,
   });
 
   try {
